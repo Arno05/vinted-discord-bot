@@ -28,7 +28,9 @@ const syncSubscription = (subscriptionData: Subscription) => {
             const items = res.items
                 .sort((a, b) => new Date(b.photo.high_resolution.timestamp).getTime() - new Date(a.photo.high_resolution.timestamp).getTime())
                 .filter((item) => !lastItemTimestamp || new Date(item.photo.high_resolution.timestamp).getTime() > lastItemTimestamp);
-
+            
+            console.log(subscriptionData.url,' : ',items.length);
+            
             if (!items.length) return void resolve();
 
             const newLastItemDate = new Date(items[0].photo.high_resolution.timestamp);
@@ -70,7 +72,7 @@ const syncSubscription = (subscriptionData: Subscription) => {
             }
 
             if (itemsToSend.length > 0) {
-                console.log(`👕 ${itemsToSend.length} ${itemsToSend.length > 1 ? 'nouveaux articles trouvés' : 'nouvel article trouvé'} pour la recherche ${subscriptionData.id} !\n`)
+                console.log(`👕 ${itemsToSend.length} ${itemsToSend.length > 1 ? 'nouveaux articles trouvés' : 'nouvel article trouvé'} pour la recherche ${subscriptionData.id} !`)
             }
 
             resolve();
@@ -90,7 +92,7 @@ const sync = async () => {
         lastFetchFinished = true;
     }, 20_000);
 
-    console.log(`🤖 Synchronisation à Vinted...\n`);
+    console.log(`🤖 Synchronisation à Vinted...`);
 
     const subscriptions = await getConnection().manager.getRepository(Subscription).find({
         isActive: true
@@ -104,13 +106,13 @@ const sync = async () => {
 };
 
 client.on('ready', () => {
-    console.log(`🔗 Connecté sur le compte de ${client.user!.tag} !\n`);
+    console.log(`🔗 Connecté sur le compte de ${client.user!.tag} !`);
 
     isFirstSync = true;
 
     const messages = [
-        `🕊️ Ce projet libre et gratuit demande du temps. Si vous en avez les moyens, n'hésitez pas à soutenir le développement avec un don ! https://paypal.me/andr0z\n`,
-        `🤟 Le saviez-vous ? Nous proposons notre propre version du bot en ligne 24/24 7/7 sans que vous n'ayez besoin de vous soucier de quoi que ce soit ! https://distrobot.fr\n`
+        `🕊️ Ce projet libre et gratuit demande du temps. Si vous en avez les moyens, n'hésitez pas à soutenir le développement avec un don ! https://paypal.me/andr0z`,
+        `🤟 Le saviez-vous ? Nous proposons notre propre version du bot en ligne 24/24 7/7 sans que vous n'ayez besoin de vous soucier de quoi que ce soit ! https://distrobot.fr`
     ];
     let idx = 0;
     const donate = () => console.log(messages[ idx % 2 ]);
@@ -123,9 +125,9 @@ client.on('ready', () => {
     }, 120_000);
 
     sync();
-    setInterval(sync, 15000);
+    setInterval(sync, 10000);
 
-    client.user!.setActivity(`Vinted BOT | v3 Docker 🐳`);
+    client.user!.setActivity(`Vinted BOT, Nora05`);
 });
 
 client.on('interactionCreate', async (interaction) => {
