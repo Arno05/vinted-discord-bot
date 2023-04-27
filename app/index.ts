@@ -26,7 +26,7 @@ const syncSubscription = (subscriptionData: Subscription) => {
             }
             const lastItemTimestamp = subscriptionData.latestItemDate?.getTime();
             const items = res.items
-                .sort((a, b) => b.photo.high_resolution.timestamp - a.photo.high_resolution.timestamp)
+                //.sort((a, b) => b.photo.high_resolution.timestamp - a.photo.high_resolution.timestamp)
                 .filter((item) => !lastItemTimestamp || item.photo.high_resolution.timestamp > lastItemTimestamp);
             
             console.log(subscriptionData.id,' : ',subscriptionData.url,' : ',items.length);
