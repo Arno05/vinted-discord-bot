@@ -17,7 +17,7 @@ initialize();
 const syncSubscription = (subscriptionData: Subscription) => {
     return new Promise<void>((resolve) => {
         vinted.search(subscriptionData.url, false, false, {
-            per_page: '20'
+            per_page: '50'
         }).then((res) => {
             if (!res.items) {
                 console.log('Search done bug got wrong response. Promise resolved.', res);
@@ -26,7 +26,7 @@ const syncSubscription = (subscriptionData: Subscription) => {
             }
             const lastItemTimestamp = subscriptionData.latestItemDate?.getTime();
             const items = res.items
-                //.sort((a, b) => b.photo.high_resolution.timestamp - a.photo.high_resolution.timestamp)
+                .sort((a, b) => new Date(b.photo.high_resolution.timestamp).getTime() - new Date(a.photo.high_resolution.timestamp).getTime())
                 .filter((item) => !lastItemTimestamp || item.photo.high_resolution.timestamp > lastItemTimestamp);
             
             console.log(subscriptionData.id,' : ',subscriptionData.url,' : ',items.length);
