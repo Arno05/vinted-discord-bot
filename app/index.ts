@@ -127,7 +127,7 @@ client.on('ready', () => {
     sync();
     setInterval(sync, 10000);
 
-    client.user!.setActivity(`Vinted BOT, Nora05`);
+    client.user!.setActivity(`Vinted BOT | Nora05`);
 });
 
 client.on('interactionCreate', async (interaction) => {
