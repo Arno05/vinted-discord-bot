@@ -26,10 +26,10 @@ const syncSubscription = (subscriptionData: Subscription) => {
             }
             const lastItemTimestamp = subscriptionData.latestItemDate?.getTime();
             const items = res.items
-                .sort((a, b) => new Date(b.photo.high_resolution.timestamp).getTime() - new Date(a.photo.high_resolution.timestamp).getTime())
+                .sort((a, b) => b.photo.high_resolution.timestamp - a.photo.high_resolution.timestamp)
                 .filter((item) => !lastItemTimestamp || item.photo.high_resolution.timestamp > lastItemTimestamp);
             
-            console.log(subscriptionData.id,' : ',subscriptionData.url,' : ',items.length,' : ',lastItemTimestamp,' : ',res.items[0].photo.high_resolution.timestamp);
+            console.log(subscriptionData.id,' : ',subscriptionData.url,' : ',items.length);
             
             if (!items.length) return void resolve();
 
@@ -50,7 +50,7 @@ const syncSubscription = (subscriptionData: Subscription) => {
                     .setURL(item.url)
                     .setImage(item.photo.url)
                     .setColor('#09B1BA')
-                    .setTimestamp(new Date(item.photo.high_resolution.timestamp))
+                    .setTimestamp(item.photo.high_resolution.timestamp)
                     .setFooter(`Article lié à la recherche : ${subscriptionData.id}`)
                     .addField('Prix', item.price || 'vide', true)
                     .addField('Taille', item.size_title || 'vide', true);
